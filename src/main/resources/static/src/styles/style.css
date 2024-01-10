@@ -1,0 +1,36 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+    margin: 0;
+}
+
+.map {
+    display: grid;
+    border: 2px solid red;
+    grid-template-columns: repeat(40,25px);
+    grid-gap: 1px;
+}
+
+.cell {
+    
+    height: 25px;
+}
+
+.empty {
+    background-color: #fff;
+}
+
+.wall {
+    background-color: #333;
+       
+}
+
+#player {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    position: absolute;
+    transition: transform 0.2s ease-in-out;
+  }
