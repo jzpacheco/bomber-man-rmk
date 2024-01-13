@@ -1,5 +1,6 @@
 package com.jzpacheco.bombermanrmk.controllers;
 
+import com.jzpacheco.bombermanrmk.model.Game;
 import com.jzpacheco.bombermanrmk.model.Player;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -13,4 +14,9 @@ public class GameController {
     public Player handlePlayerJoinGame(Player player){
         return player;
     };
+
+
+    private Game initializer(){
+        return new Game();
+    }
 }
