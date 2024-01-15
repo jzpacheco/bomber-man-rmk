@@ -30,9 +30,6 @@ function isCorner(i,j){
     return (i <= 1 && j <= 1) || (i <= 1 && j >= mapSize.y - 2) || (i >= mapSize.x - 2 && j <= 1) || (i >= mapSize.x - 2 && j >= mapSize.y - 2)
 }
 
-
-createMap()
-
 function updatePlayerPosition(){
     player.style.transform = `translate(${playerPosition.x *27}px, ${playerPosition.y *27}px)`
 }
@@ -75,6 +72,7 @@ document.addEventListener('keydown', function (event){
     }
 })
 
+createMap()
 renderMap();
 updatePlayerPosition();
 
