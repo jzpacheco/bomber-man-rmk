@@ -16,7 +16,7 @@ function createMap(){
         for (let j = 0; j < mapSize.y; j++) {
             if (i % 2 != 0 && j % 2 != 0){
                 map[i][j] = 2
-            } else if ((i <= 1 && j <= 1) || (i <= 1 && j >= mapSize.y - 2) || (i >= mapSize.x - 2 && j <= 1) || (i >= mapSize.x - 2 && j >= mapSize.y - 2)) {
+            } else if (isCorner()) {
                 map[i][j] = 0
               } else {
                 map[i][j] = Math.floor(Math.random() * 2);
@@ -24,6 +24,10 @@ function createMap(){
         }
         
     }
+}
+
+function isCorner(){
+    return (i <= 1 && j <= 1) || (i <= 1 && j >= mapSize.y - 2) || (i >= mapSize.x - 2 && j <= 1) || (i >= mapSize.x - 2 && j >= mapSize.y - 2)
 }
 
 
