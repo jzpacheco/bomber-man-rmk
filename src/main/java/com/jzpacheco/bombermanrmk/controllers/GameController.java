@@ -16,7 +16,10 @@ public class GameController {
     };
 
 
-    private Game initializer(){
+    @MessageMapping("/createGame")
+    @SendTo("/topic/game")
+    private Game initializer(Player player){
+
         return new Game();
     }
 }
