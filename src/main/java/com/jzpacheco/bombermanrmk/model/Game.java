@@ -1,13 +1,32 @@
 package com.jzpacheco.bombermanrmk.model;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Game {
     private int [][] map;
     private List<Player> players;
     public Game(){}
+
+
+    
+    private int[][] createMap(){
+        Map<String, Integer> mapSize = new HashMap<>();
+        mapSize.put("x",21);
+        mapSize.put("y",41);
+
+        for (int i = 0; i < mapSize.get("x"); i++) {
+            for (int j = 0; j < mapSize.get("y"); j++) {
+                if (i % 2 != 0 && j%2 != 0){
+                    map[i][j] = 2;
+                } else if ((i <= 1 && j <= 1) || (i <= 1 && j >= mapSize.y - 2) || (i >= mapSize.x - 2 && j <= 1) || (i >= mapSize.x - 2 && j >= mapSize.y - 2)
+                 {
+
+                }
+
+            }
+            
+        }
+    }
 
     public int[][] getMap() {
         return map;
