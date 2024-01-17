@@ -19,7 +19,7 @@ public class GameController {
     @MessageMapping("/createGame")
     @SendTo("/topic/game")
     private Game initializer(Player player){
-
-        return new Game();
+        Game game = new Game(player);
+        return game;
     }
 }
