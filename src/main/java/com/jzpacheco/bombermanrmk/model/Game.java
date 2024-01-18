@@ -6,6 +6,8 @@ public class Game {
     private String password;
     private int [][] map;
     private List<Player> players = new ArrayList<>();
+    private static final int X = 21;
+    private static final int Y = 41;
     public Game(){}
 
     public Game(Player player) {
@@ -22,25 +24,19 @@ public class Game {
 
 
     private int[][] createMap(){
-        Map<String, Integer> mapSize = new HashMap<>();
-        mapSize.put("x",21);
-        mapSize.put("y",41);
 
-        int[][] newMap = new int[mapSize.get("x")][];
+        int[][] newMap = new int[X][];
 
-
-        for (int i = 0; i < mapSize.get("x"); i++) {
-            for (int j = 0; j < mapSize.get("y"); j++) {
+        for (int i = 0; i < X; i++) {
+            for (int j = 0; j < Y; j++) {
                 if (isFixedObstacle(i, j)){
                     newMap[i][j] = 2;
-                } else if (isInitialPosition(mapSize, i, j)){
+                } else if (isInitialPosition(i, j)){
                     newMap[i][j] = 0;
                 } else {
                     newMap[i][j] = emptyOrWall(i,j);
                 }
-
             }
-            
         }
         return newMap;
     }
@@ -49,8 +45,8 @@ public class Game {
         return i % 2 != 0 && j % 2 != 0;
     }
 
-    private boolean isInitialPosition(Map<String, Integer> mapSize, int i, int j) {
-        return (i <= 1 && j <= 1) || (i <= 1 && j >= mapSize.get("y") - 2) || (i >= mapSize.get("x") - 2 && j <= 1) || (i >= mapSize.get("x") - 2 && j >= mapSize.get("y") - 2);
+    private boolean isInitialPosition(int i, int j) {
+        return (i <= 1 && j <= 1) || (i <= 1 && j >= Y - 2) || (i >= X - 2 && j <= 1) || (i >= X - 2 && j >= Y - 2);
     }
 
     private int emptyOrWall(int i, int j){
@@ -62,9 +58,6 @@ public class Game {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public int[][] getMap() {
         return map;

@@ -9,17 +9,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GameController {
 
+    private Game game;
+
     @MessageMapping("/joinGame")
     @SendTo("/topic/game")
-    public Player handlePlayerJoinGame(Player player){
-        return player;
+    public Game handlePlayerJoinGame(Player player){
+        //TO-DO: IMPLEMENTAR LÓGICA PARA ADICIONAR PLAYER E/OU MOVIMENTA-LO
+
+
+        return game;
     };
 
 
     @MessageMapping("/createGame")
     @SendTo("/topic/game")
-    private Game initializer(Player player){
-        Game game = new Game(player);
+    private Game handleGameInitializer(Player player){
+        game = new Game(player);
         return game;
     }
 }
