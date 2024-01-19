@@ -1,3 +1,28 @@
+const stompClient = new StompJs.Client({
+    brokerURL: 'ws://localhost:8080/bomberman-ws'
+})
+
+stompClient.onConnect = (frame) => {
+    //setConnected(true)
+    console.log('Connected: '+frame)
+    stompClient.subscribe('/topic/game', (game) => {
+        renderMap(game)
+    })
+}
+
+stompClient.onWebSocketError = (error) => {
+    console.error('Error with websocket ', error)
+}
+
+stompClient.onStompError = (frame) => {
+    console.error('Broker reported error: ', + frame.headers('message'))
+    console.error('Additional details: '+ frame.body)
+}
+
+function connect(){
+    stompClient.activate();
+}
+
 const mapSize = {x: 21, y:41}
 
 
@@ -34,7 +59,10 @@ function updatePlayerPosition(){
     player.style.transform = `translate(${playerPosition.x *27}px, ${playerPosition.y *27}px)`
 }
 
-function renderMap() {
+function renderMap(game) {
+    console.log("Game: "+ game)
+
+
     map.forEach(row => {
         row.forEach(cellType => {
             var cell = document.createElement('div')
