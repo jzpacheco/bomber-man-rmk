@@ -6,8 +6,11 @@ stompClient.onConnect = (frame) => {
     //setConnected(true)
     console.log('Connected: '+frame)
     stompClient.subscribe('/topic/game', (game) => {
-        renderMap(game)
+        console.log("game" + game.body)
+        //renderMap(game)
     })
+
+    createGame();
 }
 
 stompClient.onWebSocketError = (error) => {
@@ -21,8 +24,24 @@ stompClient.onStompError = (frame) => {
 
 function connect(){
     stompClient.activate();
+    console.log("mahoy")
+    
 }
 
+function createGame(){
+ 
+    var player = {
+        id: 1,
+        name: 'Exemplo',
+        x: 10,
+        y: 20
+      };
+    stompClient.publish({
+        destination: "/app/createGame",
+        body:JSON.stringify(player)
+    })
+}
+/*
 const mapSize = {x: 21, y:41}
 
 
@@ -34,26 +53,6 @@ mapContainer.appendChild(player)
 
 playerPosition = {x:0,y:0}
 
-map = []
-function createMap(){
-    for (let i = 0; i < mapSize.x; i++) {
-        map[i] = []
-        for (let j = 0; j < mapSize.y; j++) {
-            if (i % 2 != 0 && j % 2 != 0){
-                map[i][j] = 2
-            } else if (isCorner(i,j)) {
-                map[i][j] = 0
-              } else {
-                map[i][j] = Math.floor(Math.random() * 2);
-            }
-        }
-        
-    }
-}
-
-function isCorner(i,j){
-    return (i <= 1 && j <= 1) || (i <= 1 && j >= mapSize.y - 2) || (i >= mapSize.x - 2 && j <= 1) || (i >= mapSize.x - 2 && j >= mapSize.y - 2)
-}
 
 function updatePlayerPosition(){
     player.style.transform = `translate(${playerPosition.x *27}px, ${playerPosition.y *27}px)`
@@ -81,6 +80,7 @@ function renderMap(game) {
         })
 }
 
+
 document.addEventListener('keydown', function (event){
     if (event.key === 'ArrowUp' && map[playerPosition.y - 1][playerPosition.x] === 0 ){
         playerPosition.y--
@@ -99,8 +99,13 @@ document.addEventListener('keydown', function (event){
         updatePlayerPosition()
     }
 })
+*/
+$(function(){
+    $("form").on('submit', (e) => e.preventDefault());
+    $("#connect").click(() => connect())
+})
 
-createMap()
-renderMap();
-updatePlayerPosition();
+// createMap()
+// renderMap();
+// updatePlayerPosition();
 

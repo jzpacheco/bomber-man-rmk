@@ -25,7 +25,7 @@ public class Game {
 
     private int[][] createMap(){
 
-        int[][] newMap = new int[X][];
+        int[][] newMap = new int[X][Y];
 
         for (int i = 0; i < X; i++) {
             for (int j = 0; j < Y; j++) {
