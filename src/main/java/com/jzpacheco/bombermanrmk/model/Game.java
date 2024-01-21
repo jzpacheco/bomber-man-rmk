@@ -8,12 +8,35 @@ public class Game {
     private List<Player> players = new ArrayList<>();
     private static final int X = 21;
     private static final int Y = 41;
-    public Game(){}
+    public Game(){
+        this.password = generatePassword();
+        this.map = createMap();
+    }
 
     public Game(Player player) {
         this.password = generatePassword();
         this.players.add(player);
         this.map = createMap();
+    }
+
+    public void addPlayer(Player player){
+        if (players.size() <= 4) {
+            player.setId(players.size()+1);
+            if (players.isEmpty()) {
+                player.setX(0);
+                player.setY(0);
+            } else if (players.size() == 1) {
+                player.setX(Y - 1);
+                player.setY(X - 1);
+            } else if (players.size() == 2) {
+                player.setX(0);
+                player.setY(Y - 1);
+            } else if (players.size() == 3) {
+                player.setX(X - 1);
+                player.setY(0);
+            }
+            players.add(player);
+        }
     }
 
     private String generatePassword() {

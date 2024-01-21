@@ -23,8 +23,10 @@ public class GameController {
 
     @MessageMapping("/createGame")
     @SendTo("/topic/game")
-    private Game handleGameInitializer(Player player){
-        game = new Game(player);
+    private Game handleGameInitializer(String userName){
+        Player player = new Player(userName);
+        game = new Game();
+        game.addPlayer(player);
         return game;
     }
 }

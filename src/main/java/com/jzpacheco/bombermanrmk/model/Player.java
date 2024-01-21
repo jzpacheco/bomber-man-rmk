@@ -10,6 +10,9 @@ public class Player {
 
     public Player() {
     }
+    public Player(String name){
+        this.name = name;
+    }
 
     public Player(Integer id, String name, Integer x, Integer y) {
         this.id = id;
