@@ -1,3 +1,5 @@
+
+
 const stompClient = new StompJs.Client({
     brokerURL: 'ws://localhost:8080/bomberman-ws'
 })
@@ -5,12 +7,18 @@ const stompClient = new StompJs.Client({
 stompClient.onConnect = (frame) => {
     //setConnected(true)
     console.log('Connected: '+frame)
-    stompClient.subscribe('/topic/game', (game) => {
-        console.log("game" + game.body)
+    stompClient.subscribe('/topic/game', (message) => {
+        game = message.body
+        console.log("game: " + message.body)
         //renderMap(game)
     })
 
-    createGame();
+    if (!game.players){
+        createGame();
+    }else{
+        joinGame();
+    }
+    
 }
 
 stompClient.onWebSocketError = (error) => {
@@ -24,7 +32,6 @@ stompClient.onStompError = (frame) => {
 
 function connect(){
     stompClient.activate();
-    console.log("mahoy")
     
 }
 
@@ -41,10 +48,20 @@ function createGame(){
         body:JSON.stringify(player)
     })
 }
+
+function joinGame(){
+    stompClient.publish({
+        destination: "/app/joinGame",
+        body:JSON.stringify(user)
+    })
+}
+
+function getUser(){
+    const user = document.getElementById("user")
+    return user.value
+}
+
 /*
-const mapSize = {x: 21, y:41}
-
-
 const mapContainer = document.getElementById('map')
 
 const player = document.createElement('div')
@@ -102,7 +119,7 @@ document.addEventListener('keydown', function (event){
 */
 $(function(){
     $("form").on('submit', (e) => e.preventDefault());
-    $("#connect").click(() => connect())
+    $("#createGame").click(() => connect())
 })
 
 // createMap()
