@@ -6,17 +6,18 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
 public class GameController {
 
-    private Game game;
+    private HashMap<String,Game> games = new HashMap<>();
 
     @MessageMapping("/joinGame")
     @SendTo("/topic/game")
-    public Game handlePlayerJoinGame(Player player){
-        //TO-DO: IMPLEMENTAR LÓGICA PARA ADICIONAR PLAYER E/OU MOVIMENTA-LO
-
-
+    public Game handlePlayerJoinGame(String password){
+        Game game = games.get(password);
+        game.addPlayer(new Player());
         return game;
     };
 
@@ -25,8 +26,10 @@ public class GameController {
     @SendTo("/topic/game")
     private Game handleGameInitializer(String userName){
         Player player = new Player(userName);
-        game = new Game();
+        Game game = new Game();
         game.addPlayer(player);
+
+        games.put(game.getPassword(), game);
         return game;
     }
 }
