@@ -1,24 +1,63 @@
-
+let game;
 
 const stompClient = new StompJs.Client({
     brokerURL: 'ws://localhost:8080/bomberman-ws'
 })
 
 stompClient.onConnect = (frame) => {
-    //setConnected(true)
     console.log('Connected: '+frame)
+
     stompClient.subscribe('/topic/game', (message) => {
-        game = message.body
-        console.log("game: " + message.body)
-        //renderMap(game)
+        game = JSON.parse(message.body)
+        console.log(game)
+        renderMap(game)
     })
 
-    if (!game.players){
-        createGame();
-    }else{
-        joinGame();
-    }
-    
+  console.log(game)  
+}
+
+function renderMap(game) {
+    let mapContainer = document.getElementById("map")
+    let map = game.map
+
+    console.log(typeof game)
+
+    map.forEach(row => {
+        row.forEach(cellType => {
+            var cell = document.createElement('div')
+            cell.classList.add('cell')
+
+            if (cellType === 0){
+                cell.classList.add('empty')
+            } else if (cellType === 1) {
+                cell.classList.add('wall')
+            } else {
+                cell.classList.add('fixed-obstacle')
+            }
+
+            mapContainer.appendChild(cell);
+        })
+        })
+}
+
+function createGame(){
+    let name = document.getElementById('user').value
+    var player = {
+        name: name,
+      };
+
+      console.log(player)
+    stompClient.publish({
+        destination: "/app/createGame",
+        body:JSON.stringify(player)
+    })
+}
+
+function joinGame(){
+    stompClient.publish({
+        destination: "/app/joinGame",
+        body:JSON.stringify(user)
+    })
 }
 
 stompClient.onWebSocketError = (error) => {
@@ -35,26 +74,7 @@ function connect(){
     
 }
 
-function createGame(){
- 
-    var player = {
-        id: 1,
-        name: 'Exemplo',
-        x: 10,
-        y: 20
-      };
-    stompClient.publish({
-        destination: "/app/createGame",
-        body:JSON.stringify(player)
-    })
-}
 
-function joinGame(){
-    stompClient.publish({
-        destination: "/app/joinGame",
-        body:JSON.stringify(user)
-    })
-}
 
 function getUser(){
     const user = document.getElementById("user")
@@ -75,27 +95,7 @@ function updatePlayerPosition(){
     player.style.transform = `translate(${playerPosition.x *27}px, ${playerPosition.y *27}px)`
 }
 
-function renderMap(game) {
-    console.log("Game: "+ game)
 
-
-    map.forEach(row => {
-        row.forEach(cellType => {
-            var cell = document.createElement('div')
-            cell.classList.add('cell')
-
-            if (cellType === 0){
-                cell.classList.add('empty')
-            } else if (cellType === 1) {
-                cell.classList.add('wall')
-            } else {
-                cell.classList.add('fixed-obstacle')
-            }
-
-            mapContainer.appendChild(cell);
-        })
-        })
-}
 
 
 document.addEventListener('keydown', function (event){
@@ -119,7 +119,8 @@ document.addEventListener('keydown', function (event){
 */
 $(function(){
     $("form").on('submit', (e) => e.preventDefault());
-    $("#createGame").click(() => connect())
+    $("#connect").click(() => connect())
+    $("#createGame").click(() => createGame())
 })
 
 // createMap()
