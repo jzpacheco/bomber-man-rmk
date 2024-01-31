@@ -1,4 +1,12 @@
+const mapContainer = document.getElementById("map")
+const playerDiv = document.createElement('div')
+
 let game;
+let player;
+let connectionType;
+playerDiv.id = 'player'
+mapContainer.appendChild(playerDiv)
+
 
 const stompClient = new StompJs.Client({
     brokerURL: 'ws://localhost:8080/bomberman-ws'
@@ -8,20 +16,28 @@ stompClient.onConnect = (frame) => {
     console.log('Connected: '+frame)
 
     stompClient.subscribe('/topic/game', (message) => {
+        
+        
         game = JSON.parse(message.body)
+       // player = game.player
         console.log(game)
         renderMap(game)
     })
+    
 
-  console.log(game)  
+    if (connectionType === 'JOIN_GAME'){
+        joinGame()
+    }else{
+        console.log("entrou")
+        createGame()
+    }
 }
 
+
+
 function renderMap(game) {
-    let mapContainer = document.getElementById("map")
+    
     let map = game.map
-
-    console.log(typeof game)
-
     map.forEach(row => {
         row.forEach(cellType => {
             var cell = document.createElement('div')
@@ -41,12 +57,11 @@ function renderMap(game) {
 }
 
 function createGame(){
-    let name = document.getElementById('user').value
+    const name = document.getElementById('user').value
     var player = {
         name: name,
       };
 
-      console.log(player)
     stompClient.publish({
         destination: "/app/createGame",
         body:JSON.stringify(player)
@@ -60,6 +75,15 @@ function joinGame(){
     })
 }
 
+
+
+playerPosition = {x:0,y:0}
+
+
+function updatePlayerPosition(){
+    playerDiv.style.transform = `translate(${playerPosition.x *27}px, ${playerPosition.y *27}px)`
+}
+
 stompClient.onWebSocketError = (error) => {
     console.error('Error with websocket ', error)
 }
@@ -70,8 +94,7 @@ stompClient.onStompError = (frame) => {
 }
 
 function connect(){
-    stompClient.activate();
-    
+        stompClient.activate();
 }
 
 
@@ -82,21 +105,6 @@ function getUser(){
 }
 
 /*
-const mapContainer = document.getElementById('map')
-
-const player = document.createElement('div')
-player.id = 'player'
-mapContainer.appendChild(player)
-
-playerPosition = {x:0,y:0}
-
-
-function updatePlayerPosition(){
-    player.style.transform = `translate(${playerPosition.x *27}px, ${playerPosition.y *27}px)`
-}
-
-
-
 
 document.addEventListener('keydown', function (event){
     if (event.key === 'ArrowUp' && map[playerPosition.y - 1][playerPosition.x] === 0 ){
@@ -118,9 +126,17 @@ document.addEventListener('keydown', function (event){
 })
 */
 $(function(){
-    $("form").on('submit', (e) => e.preventDefault());
-    $("#connect").click(() => connect())
-    $("#createGame").click(() => createGame())
+    $("form").on('submit', (e) => {
+        e.preventDefault()
+         connect()
+         connectionType = "CREATE_GAME"
+         
+    });
+    //$("#connect").click(() => )
+    $("#joinGame").click(() => {
+        connect()
+        connectionType = "JOIN_GAME"
+    })
 })
 
 // createMap()
