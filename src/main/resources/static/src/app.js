@@ -1,6 +1,9 @@
 const mapContainer = document.getElementById("map")
 const playerDiv = document.createElement('div')
 
+const canvas = document.getElementById("canvas")
+const ctx = canvas.getContext("2d")
+
 let game;
 let player;
 let connectionType;
@@ -16,7 +19,6 @@ stompClient.onConnect = (frame) => {
     console.log('Connected: '+frame)
 
     stompClient.subscribe('/topic/game', (message) => {
-        
         
         game = JSON.parse(message.body)
        // player = game.player
@@ -38,6 +40,17 @@ stompClient.onConnect = (frame) => {
 function renderMap(game) {
     
     let map = game.map
+    let cellSize = canvas.width / game.x
+    console.log(typeof map)
+
+    for (let x = 0; x <game.x; x++) {
+        for (let y = 0; y < game.y; y++) {
+            ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+
+            
+        }  
+    }
+
     map.forEach(row => {
         row.forEach(cellType => {
             var cell = document.createElement('div')
@@ -55,6 +68,20 @@ function renderMap(game) {
         })
         })
 }
+
+function drawObstacle(x, y, width, height, cornerRadius, type) {
+    ctx.beginPath();
+    ctx.moveTo(x + cornerRadius, y);
+    ctx.arcTo(x + width, y, x + width, y + height, cornerRadius);
+    ctx.arcTo(x + width, y + height, x, y + height, cornerRadius);
+    ctx.arcTo(x, y + height, x, y, cornerRadius);
+    ctx.arcTo(x, y, x + width, y, cornerRadius);
+    ctx.closePath();
+  
+    ctx.fillStyle = 'orange';  // Define a cor de preenchimento como laranja
+    ctx.stroke();
+    ctx.fill();  // Preenche o interior com a cor laranja
+  }
 
 function createGame(){
     const name = document.getElementById('user').value
