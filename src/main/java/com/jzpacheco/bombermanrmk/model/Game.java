@@ -1,11 +1,15 @@
 package com.jzpacheco.bombermanrmk.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.*;
 
 public class Game {
     private String password;
     private int [][] map;
     private List<Player> players = new ArrayList<>();
+
+    @JsonProperty
     private static final int X = 21;
     private static final int Y = 41;
     public Game(){

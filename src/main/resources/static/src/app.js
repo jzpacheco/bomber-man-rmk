@@ -1,8 +1,13 @@
 const mapContainer = document.getElementById("map")
 const playerDiv = document.createElement('div')
 
+const login = document.getElementById("login")
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
+
+const EMPTY = 0;
+const WALL = 1;
+const FIXED_OBSTACLE = 2;
 
 let game;
 let player;
@@ -16,13 +21,15 @@ const stompClient = new StompJs.Client({
 })
 
 stompClient.onConnect = (frame) => {
+    login.classList.add("hidden")
+    canvas.classList.remove("hidden")
+
     console.log('Connected: '+frame)
 
     stompClient.subscribe('/topic/game', (message) => {
         
         game = JSON.parse(message.body)
        // player = game.player
-        console.log(game)
         renderMap(game)
     })
     
@@ -38,16 +45,18 @@ stompClient.onConnect = (frame) => {
 
 
 function renderMap(game) {
-    
+    console.log(game.password)
     let map = game.map
     let cellSize = canvas.width / game.x
-    console.log(typeof map)
+    console.log("cellSize: "+cellSize)
+    console.log("game.x "+game.x)
+    console.log("game.y "+game.y)
+    
 
     for (let x = 0; x <game.x; x++) {
         for (let y = 0; y < game.y; y++) {
+            console.log("entrou?"+ x+" "+y)
             ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
-
-            
         }  
     }
 
@@ -55,12 +64,14 @@ function renderMap(game) {
         row.forEach(cellType => {
             var cell = document.createElement('div')
             cell.classList.add('cell')
+            
 
-            if (cellType === 0){
+            if (cellType === EMPTY){
                 cell.classList.add('empty')
-            } else if (cellType === 1) {
+            } else if (cellType === WALL) {
                 cell.classList.add('wall')
-            } else {
+                
+            } else if (cellType === FIXED_OBSTACLE) {
                 cell.classList.add('fixed-obstacle')
             }
 
@@ -166,7 +177,4 @@ $(function(){
     })
 })
 
-// createMap()
-// renderMap();
-// updatePlayerPosition();
 
