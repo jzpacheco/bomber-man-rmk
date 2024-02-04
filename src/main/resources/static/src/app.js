@@ -48,6 +48,7 @@ function renderMap(game) {
     console.log(game.password)
     let map = game.map
     let cellSize = canvas.width / game.x
+    console.log("infos")
     console.log("cellSize: "+cellSize)
     console.log("game.x "+game.x)
     console.log("game.y "+game.y)

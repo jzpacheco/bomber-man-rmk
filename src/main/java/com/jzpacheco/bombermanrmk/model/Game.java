@@ -9,9 +9,9 @@ public class Game {
     private int [][] map;
     private List<Player> players = new ArrayList<>();
 
-    @JsonProperty
-    private static final int X = 21;
-    private static final int Y = 41;
+
+    private static  int X = 21;
+    private static  int Y = 41;
     public Game(){
         this.password = generatePassword();
         this.map = createMap();
