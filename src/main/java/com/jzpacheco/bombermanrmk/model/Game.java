@@ -10,8 +10,8 @@ public class Game {
     private List<Player> players = new ArrayList<>();
 
 
-    private static  int X = 21;
-    private static  int Y = 41;
+    private  int x = 21;
+    private  int y = 41;
     public Game(){
         this.password = generatePassword();
         this.map = createMap();
@@ -30,13 +30,13 @@ public class Game {
                 player.setX(0);
                 player.setY(0);
             } else if (players.size() == 1) {
-                player.setX(Y - 1);
-                player.setY(X - 1);
+                player.setX(x - 1);
+                player.setY(x - 1);
             } else if (players.size() == 2) {
                 player.setX(0);
-                player.setY(Y - 1);
+                player.setY(y - 1);
             } else if (players.size() == 3) {
-                player.setX(X - 1);
+                player.setX(x - 1);
                 player.setY(0);
             }
             players.add(player);

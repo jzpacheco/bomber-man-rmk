@@ -50,8 +50,8 @@ function renderMap(game) {
     let cellSize = canvas.width / game.x
     console.log("infos")
     console.log("cellSize: "+cellSize)
-    console.log("game.x "+game.x)
-    console.log("game.y "+game.y)
+    console.log("game.x "+game.y)
+    console.log("game.y "+game.x)
     
 
     for (let x = 0; x <game.x; x++) {
