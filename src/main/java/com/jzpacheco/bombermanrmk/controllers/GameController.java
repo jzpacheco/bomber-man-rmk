@@ -4,6 +4,8 @@ import com.jzpacheco.bombermanrmk.model.Game;
 import com.jzpacheco.bombermanrmk.model.Player;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -12,6 +14,16 @@ import java.util.HashMap;
 public class GameController {
 
     private HashMap<String,Game> games = new HashMap<>();
+    private HashMap<Integer,Player> players = new HashMap<>();
+
+    @PostMapping("/player")
+    public Player createPlayer(@RequestBody String userName){
+        Player player = new Player(userName);
+
+        players.put(player.getId(),player);
+        return player;
+
+    };
 
     @MessageMapping("/joinGame")
     @SendTo("/topic/game")
@@ -24,8 +36,8 @@ public class GameController {
 
     @MessageMapping("/createGame")
     @SendTo("/topic/game")
-    private Game handleGameInitializer(String userName){
-        Player player = new Player(userName);
+    private Game handleGameInitializer(Integer playerId){
+        Player player = players.get(playerId);
         Game game = new Game();
         game.addPlayer(player);
 
