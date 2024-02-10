@@ -9,8 +9,12 @@ import java.util.List;
 public class GameRepository {
     private HashMap<String, Game> games = new HashMap<>();
 
-    public Game findById(Integer id){
-        return  games.get(id);
+    public Game findByPassword(String password){
+        return  games.get(password);
+    }
+
+    public List<Game> findAll(){
+        return games.values().stream().toList();
     }
 
     public Game postPlayer(Game game){
@@ -19,7 +23,7 @@ public class GameRepository {
         return games.get(game.getPassword());
     }
 
-    public List<Game> findAll(){
-        return games.values().stream().toList();
-    }
+
+
+
 }

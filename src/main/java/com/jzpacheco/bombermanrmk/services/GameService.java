@@ -22,4 +22,8 @@ public class GameService {
        return repository.postPlayer(game);
     }
 
+    public Game join(String password){
+        return repository.findByPassword(password);
+    }
+
 }
