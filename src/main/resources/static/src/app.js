@@ -4,6 +4,7 @@ const playerDiv = document.createElement('div')
 const login = document.getElementById("login")
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
+const userName = document.getElementById('user').value
 
 const EMPTY = 0;
 const WALL = 1;
@@ -29,9 +30,20 @@ stompClient.onConnect = (frame) => {
     stompClient.subscribe('/topic/game', (message) => {
         
         game = JSON.parse(message.body)
-       // player = game.player
         renderMap(game)
     })
+
+    fetch('https://localhost:8080/players',{
+        method: 'POST',
+        body: userName
+    }).then((response) =>{
+        if (response.ok){
+            return response.json()
+        }else {
+            return Promise.reject(response);
+        }
+    }).then((data) => player = data.body)
+    .catch((err)=>console.warn("Não foi possível cadastrar o usuário: "+ err))
     
 
     if (connectionType === 'JOIN_GAME'){
@@ -96,11 +108,7 @@ function drawObstacle(x, y, width, height, cornerRadius, type) {
   }
 
 function createGame(){
-    const name = document.getElementById('user').value
-    var player = {
-        name: name,
-      };
-
+    
     stompClient.publish({
         destination: "/app/createGame",
         body:JSON.stringify(player)
