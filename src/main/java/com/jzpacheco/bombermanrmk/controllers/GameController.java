@@ -8,11 +8,7 @@ import com.jzpacheco.bombermanrmk.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
 
 @RestController
 public class GameController {
@@ -31,11 +27,7 @@ public class GameController {
     @MessageMapping("/joinGame")
     @SendTo("/topic/game")
     public Game handlePlayerJoinGame(PlayerJoinRequest request){
-        Game game = gameService.join(request.getPassword());
-
-        //TO-DO
-        game.addPlayer(new Player());
-        return game;
+        return gameService.join(request);
     };
 
 
@@ -44,9 +36,7 @@ public class GameController {
     private Game handleGameInitializer(Integer playerId){
         Player player = playerService.findById(playerId);
         Game game = new Game();
-        game.addPlayer(player);
-
-        games.put(game.getPassword(), game);
+        game.handlePlayer(player);
         return game;
     }
 }

@@ -3,16 +3,15 @@ package com.jzpacheco.bombermanrmk.services;
 import com.jzpacheco.bombermanrmk.model.Game;
 import com.jzpacheco.bombermanrmk.model.Player;
 import com.jzpacheco.bombermanrmk.repositories.GameRepository;
-import com.jzpacheco.bombermanrmk.repositories.PlayerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.jzpacheco.bombermanrmk.request.PlayerJoinRequest;
 
 import java.util.List;
 
 public class GameService {
     private GameRepository repository;
 
-    public Game findById(Integer id){
-        return  repository.findById(id);
+    public Game findByPassword(String password){
+        return  repository.findByPassword(password);
     }
 
     public List<Game> findAll(){
@@ -22,8 +21,11 @@ public class GameService {
        return repository.postPlayer(game);
     }
 
-    public Game join(String password){
-        return repository.findByPassword(password);
+    public Game join(PlayerJoinRequest request){
+        Game game = repository.findByPassword(request.getPassword());
+
+        game.handlePlayer(request.getPlayer());
+        return game;
     }
 
 }

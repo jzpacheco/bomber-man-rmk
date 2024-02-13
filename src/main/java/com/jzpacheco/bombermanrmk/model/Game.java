@@ -1,7 +1,5 @@
 package com.jzpacheco.bombermanrmk.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.*;
 
 public class Game {
@@ -23,7 +21,7 @@ public class Game {
         this.map = createMap();
     }
 
-    public void addPlayer(Player player){
+    public void handlePlayer(Player player){
         if (players.size() <= 4) {
             player.setId(players.size()+1);
             if (players.isEmpty()) {
