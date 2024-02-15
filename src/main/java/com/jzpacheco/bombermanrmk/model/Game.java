@@ -5,7 +5,7 @@ import java.util.*;
 public class Game {
     private String password;
     private int [][] map;
-    private List<Player> players = new ArrayList<>();
+    private Map<Integer, Player> players = new HashMap<>();
 
 
     private  int x = 21;
@@ -17,27 +17,35 @@ public class Game {
 
     public Game(Player player) {
         this.password = generatePassword();
-        this.players.add(player);
+        this.players.put(player.getId(), player);
         this.map = createMap();
     }
 
-    public void handlePlayer(Player player){
-        if (players.size() <= 4) {
-            player.setId(players.size()+1);
-            if (players.isEmpty()) {
-                player.setX(0);
-                player.setY(0);
-            } else if (players.size() == 1) {
-                player.setX(x - 1);
-                player.setY(x - 1);
-            } else if (players.size() == 2) {
-                player.setX(0);
-                player.setY(y - 1);
-            } else if (players.size() == 3) {
-                player.setX(x - 1);
-                player.setY(0);
+    public void handlePlayer(Player player) {
+
+        if (players.size() <= 4 && !players.containsKey(player.getId())) {
+            player.setId(players.size() + 1);
+
+            switch (players.size()) {
+                case 0 -> {
+                    player.setX(0);
+                    player.setY(0);
+                }
+                case 1 -> {
+                    player.setX(x - 1);
+                    player.setY(x - 1);
+                }
+                case 2 -> {
+                    player.setX(0);
+                    player.setY(y - 1);
+                }
+                case 3 -> {
+                    player.setX(x - 1);
+                    player.setY(0);
+                }
             }
-            players.add(player);
+
+            players.put(player.getId(), player);
         }
     }
 
@@ -50,10 +58,10 @@ public class Game {
 
     private int[][] createMap(){
 
-        int[][] newMap = new int[X][Y];
+        int[][] newMap = new int[x][y];
 
-        for (int i = 0; i < X; i++) {
-            for (int j = 0; j < Y; j++) {
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
                 if (isFixedObstacle(i, j)){
                     newMap[i][j] = 2;
                 } else if (isInitialPosition(i, j)){
