@@ -22,6 +22,7 @@ public class Game {
     }
 
     public void handlePlayer(Player player) {
+        //TO-DO: Verifiy player
 
         if (players.size() <= 4 && !players.containsKey(player.getId())) {
             player.setId(players.size() + 1);
