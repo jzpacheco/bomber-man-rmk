@@ -23,7 +23,11 @@ public class Game {
 
     public void handlePlayer(Player player) {
         if (players.containsKey(player.getId())){
-            players.put(player.getId(), player);
+            Player newPlayer = players.get(player.getId());
+
+            newPlayer.setX(player.getX());
+            newPlayer.setY(player.getY());
+            players.put(player.getId(), newPlayer);
         }
 
         if (players.size() <= 4 && !players.containsKey(player.getId())) {
