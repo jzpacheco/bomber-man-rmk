@@ -86,7 +86,7 @@ public class Game {
     }
 
     private boolean isInitialPosition(int i, int j) {
-        return (i <= 1 && j <= 1) || (i <= 1 && j >= Y - 2) || (i >= X - 2 && j <= 1) || (i >= X - 2 && j >= Y - 2);
+        return (i <= 1 && j <= 1) || (i <= 1 && j >= y - 2) || (i >= x - 2 && j <= 1) || (i >= x - 2 && j >= y - 2);
     }
 
     private int emptyOrWall(int i, int j){
@@ -107,14 +107,9 @@ public class Game {
         this.map = map;
     }
 
-    public List<Player> getPlayers() {
+    public Map<Integer, Player> getPlayers() {
         return players;
     }
-
-    public void setPlayers(List<Player> players) {
-        this.players = players;
-    }
-
 
     @Override
     public boolean equals(Object o) {
