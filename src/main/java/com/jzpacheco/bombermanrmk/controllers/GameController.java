@@ -29,7 +29,7 @@ public class GameController {
     public Game handlePlayerJoinGame(PlayerJoinRequest request){
         return gameService.join(request);
     };
-//To-DO
+//To-DO: Test player api and joinGame refactor?
 
     @MessageMapping("/createGame")
     @SendTo("/topic/game")
