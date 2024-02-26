@@ -15,7 +15,7 @@ let player;
 let connectionType;
 playerDiv.id = 'player'
 mapContainer.appendChild(playerDiv)
-//TO-DO: Organize , test player insert and dockerize
+//TO-DO: Organize , test player insert and dockerize and get tha shit done
 
 const stompClient = new StompJs.Client({
     brokerURL: 'ws://localhost:8080/bomberman-ws'
